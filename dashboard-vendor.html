@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Bank Ticketing System</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Consultix Support Portal</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-page="assigned-tickets">
+            <span class="nav-icon">🎫</span>
+            <span>Assigned Tickets</span>
+          </a>
+          <a href="#" class="nav-item" data-page="analytics">
+            <span class="nav-icon">📈</span>
+            <span>Analytics</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="btn btn-secondary btn-block" onclick="logout()">
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+          <h1 id="pageTitle">Dashboard</h1>
+          <div class="user-info">
+            <span> Welcome Back </span>
+            <span id="userName"></span>
+            <span class="user-role badge badge-vendor">Vendor Team</span>
+          </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area" id="contentArea">
+          <!-- Dashboard content will be loaded here -->
+        </div>
+      </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/tickets.js"></script>
+    <script src="js/dashboard.vendor.js"></script>
+  </body>
+</html>

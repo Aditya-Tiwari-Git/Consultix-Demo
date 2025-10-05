@@ -1,0 +1,282 @@
+Role: You are a full stack website developer who creates stunning websites and complete systems.
+
+Goal: Build a complete, responsive, ServiceNow-like ticketing system demo for a Bank using only HTML, CSS, and vanilla JavaScript. Do not use any database — hardcode initial data in a js data file (data.js) and use localStorage for runtime persistence (optional). The final deliverable must be split into separate HTML/CSS/JS files (one per page / logical module) and must include a step-by-step explanation of what functionality is implemented and where.
+
+Requirements (must implement exactly)
+
+Authentication & Roles
+
+Three role types and logins:
+
+End User → UserID format: Cust1234 (regex: ^Cust\d{4}$)
+
+Support Team → UserID format: Emp123 (regex: ^Emp\d{3}$)
+
+Vendor Team → UserID format: Ven1211 (regex: ^Ven\d{4}$)
+
+Pages: Login and Register. Register allows selecting role type.
+
+Login flow:
+
+Enter UserID + Password.
+
+Validate ID format based on selected role.
+
+Present Authentication method step with options:
+
+OTP (one-time code — simulated for demo)
+
+MFA Authenticator (simulated time-based code)
+
+For demo: OTP/MFA will be simulated on the client (displayed in the UI for testing). Validate codes before granting access.
+
+Hardcode initial users in data.js (one per role) with simple plaintext passwords for the demo.
+
+Ticketing System
+
+End User functionality:
+
+Create/submit new ticket (via modal or dedicated page).
+
+Search issues (search bar + suggestion list). Allow opening ticket from suggestions.
+
+View list of their own open/closed tickets and status updates.
+
+Ticket fields — include full ServiceNow-like fields:
+
+ticketId (auto-generated)
+
+createdBy, createdAt
+
+category, subCategory
+
+shortDescription, detailedDescription
+
+priority (High / Medium / Low)
+
+impact, urgency
+
+assignmentGroup
+
+assignedTo
+
+attachments (accept files but store metadata only)
+
+status (New, In Progress, Assigned to Vendor, Resolved, Closed)
+
+SLAdue (auto-calculated)
+
+resolutionNotes, resolutionTime
+
+Ticket workflows:
+
+New ticket → auto-assigned to Support Team (simple round-robin or priority-based simulation).
+
+Support Team can:
+
+Update ticket status
+
+Add comments / resolution notes
+
+Reassign to Vendor Team (assign vendor and change assignmentGroup)
+
+Resolve / Close ticket
+
+Vendor Team can:
+
+View tickets assigned to them
+
+Update progress / add resolution notes
+
+Mark as vendor-resolved (then Support can verify and close)
+
+SLA:
+
+Hardcode SLA rules in data.js (example):
+{ High: 4*60, Medium: 24*60, Low: 72*60 } — values are minutes allowed.
+
+SLA calculation (displayed on ticket and widget):
+SLAUsedPercent = ((resolutionTime - createdTime) / allowedSLATime) * 100
+
+If ticket unresolved: elapsedMinutes = now - createdTime and SLAUsedPercent = (elapsedMinutes / allowed) * 100.
+
+Display a clear badge: On Target (≤100%) or Breach (>100%).
+
+Show SLA widget on dashboards (SLA performance % on target).
+
+UI & UX
+
+Layout should resemble the provided screenshot: Sidebar left, top header, cards/widgets at top of dashboards.
+
+Sidebar nav: Dashboard, Ticket Queue, Assigned to Me, Team View, Analytics.
+
+Dashboards for each role (different views & permissions):
+
+End User Dashboard: Raise ticket, My Requests, quick-search KB/suggestions.
+
+Support Dashboard: Priority cards, Assigned to me, SLA performance, Ticket queue table, ability to reassign to vendor.
+
+Vendor Dashboard: Tickets assigned to vendor, update ticket status.
+
+Ticket creation UI must include category dropdown, subcategory, priority, attachments, and validation.
+
+Search feature: simple keyword search over categories/shortDescription/detailedDescription with suggestion list.
+
+Technical
+
+Tech stack: HTML, CSS, vanilla JS only. No backend, no frameworks.
+
+File structure (must follow):
+
+/project-root
+├─ index.html                 # landing page (Login/Register)
+├─ login.html
+├─ register.html
+├─ dashboard-user.html
+├─ dashboard-support.html
+├─ dashboard-vendor.html
+├─ css/
+│   └─ styles.css
+├─ js/
+│   ├─ data.js                # hardcoded users, tickets, SLA rules
+│   ├─ auth.js                # login, register, OTP/MFA simulation, validation
+│   ├─ ui.js                  # shared UI helpers (modals, toasts)
+│   ├─ tickets.js             # ticket CRUD, assignment logic, SLA calc
+│   ├─ dashboard.user.js
+│   ├─ dashboard.support.js
+│   └─ dashboard.vendor.js
+└─ assets/
+    └─ icons, logos
+
+
+Persisting changes: use localStorage to persist tickets and user updates across refreshes (but data.js must contain initial hardcoded dataset).
+
+Provide clear comments in each file explaining the purpose of functions and flow.
+
+Deliverables
+
+A single combined prompt output that:
+
+Generates full contents for each file in the structure above (each file as a separate code block).
+
+Uses visible, commented code so I can copy-paste and run locally.
+
+A step-by-step implementation plan (numbered) describing what you (the developer) implemented with references to exact files & functions for each step.
+
+A test guide / quickstart: sample credentials (hardcoded IDs & passwords), how to test OTP/MFA (demo codes), and test flows (create ticket → assign → vendor → resolve) with expected outcomes.
+
+A short explanation of SLA formula and how it’s displayed and calculated in code.
+
+Important demo constraints
+
+Hardcode the required demo data in js/data.js (users, some tickets, SLA rules, assignment group mapping).
+
+Simulate OTP/MFA client-side — display the code in a test-only modal or console (explicitly label as demo-only).
+
+Avoid external libraries or CDNs — everything should work offline when opened in a browser.
+
+Make the ticket system fully functional client-side: raise, assign, reassign, update statuses, calculate SLA, search, and dashboard widgets should reflect changes.
+
+Step-by-step plan (what to implement, in order — ask the AI to follow these steps and show code/results as you finish each step)
+
+Scaffold project & static layout
+
+Files: index.html, css/styles.css, js/ui.js
+
+Implement global header, sidebar component, and card styles that match the screenshot.
+
+Hardcoded data file
+
+File: js/data.js
+
+Add sample users:
+
+Cust1001 / Cust@123 (role: enduser)
+
+Emp101 / Emp@123 (role: support)
+
+Ven2001 / Ven@123 (role: vendor)
+
+Add SLA rules and a few sample tickets to demo assignment logic.
+
+Auth system (client-only)
+
+File: js/auth.js
+
+Implement register (write to localStorage), login validation (check data.js + localStorage).
+
+Validate userID format by role using regex.
+
+Implement OTP & MFA simulation (6-digit codes shown in a demo modal, validate code).
+
+Ticket CRUD & assignment engine
+
+File: js/tickets.js
+
+Implement createTicket(), updateTicket(), assignToSupport(), reassignToVendor(), auto-generate ticketId.
+
+Implement assignment logic (e.g., assign to next available support Emp).
+
+Persist ticket changes to localStorage.
+
+SLA calculation
+
+File: js/tickets.js (SLA functions)
+
+Implement calculateSLA(statusOrResolutionTime) using the formula above and return percent and onTarget boolean.
+
+Update dashboard widgets accordingly.
+
+End User Dashboard
+
+File: dashboard-user.html + js/dashboard.user.js
+
+Add ticket submission form, My Requests table, and search with suggestions.
+
+Support Dashboard
+
+File: dashboard-support.html + js/dashboard.support.js
+
+Show priority cards, assigned tickets queue, SLA widget, ability to assign to vendor.
+
+Vendor Dashboard
+
+File: dashboard-vendor.html + js/dashboard.vendor.js
+
+Show tickets assigned to vendor, update work notes and resolution.
+
+Search & KB suggestions
+
+Implement an array of common issues in data.js and hook suggestions to ticket form.
+
+Polish & responsiveness
+
+Final CSS tweaks, comments, and local testing instructions.
+
+Demo test credentials & quickstart (include this in the output)
+
+End User: Cust1001 / Cust@123
+
+Support: Emp101 / Emp@123
+
+Vendor: Ven2001 / Ven@123
+
+OTP: demo OTP will be shown in modal (e.g., 123456) — use it to proceed
+
+MFA Auth: demo Authenticator code will be shown in modal (time-based demo)
+
+Test flow example:
+
+Login as Cust1001 → Open a new ticket in “Cards → Debit Card Blocked”, priority High.
+
+Ticket auto-assigned to Emp101 (Support).
+
+Login as Emp101, view assigned ticket, add work notes, reassign to Ven2001.
+
+Login as Ven2001, update resolution, mark vendor-resolved.
+
+Login as Emp101, verify resolution, close ticket — check SLA widget and ticket status changes.
+
+Final instruction to the AI code generator (one-line at the top of the prompt)
+
+"Generate full code for each file in the project structure above. For each generated file add comments explaining what it does. After the code, provide the step-by-step implementation summary and the quickstart/testing guide listed above."

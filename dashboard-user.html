@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Dashboard - Bank Ticketing System</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Consultix Support Portal</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-page="my-tickets">
+            <span class="nav-icon">🎫</span>
+            <span>My Tickets</span>
+          </a>
+          <a href="#" class="nav-item" data-page="create-ticket">
+            <span class="nav-icon">➕</span>
+            <span>Create Ticket</span>
+          </a>
+          <a href="#" class="nav-item" data-page="search">
+            <span class="nav-icon">🔍</span>
+            <span>Search</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="btn btn-secondary btn-block" onclick="logout()">
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+          <h1 id="pageTitle">Dashboard</h1>
+          <div class="user-info">
+            <span> Welcome Back </span>
+            <span id="userName"></span>
+            <span class="user-role badge">Customer</span>
+          </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area" id="contentArea">
+          <!-- Dashboard content will be loaded here -->
+        </div>
+      </main>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/tickets.js"></script>
+    <script src="js/dashboard.user.js"></script>
+  </body>
+</html>

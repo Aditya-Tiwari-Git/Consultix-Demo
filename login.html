@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bank Ticketing System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Login</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="roleType">Select Role</label>
+                    <select id="roleType" required>
+                        <option value="">Choose role...</option>
+                        <option value="enduser">End User (Customer)</option>
+                        <option value="support">Support Team</option>
+                        <option value="vendor">Vendor Team</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" placeholder="e.g., Cust1001, Emp101, Ven2001" required>
+                    <small id="userIdHint" class="form-hint"></small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="register.html">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP/MFA Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h2>Two-Factor Authentication</h2>
+            <div id="authMethodSelection">
+                <p>Choose authentication method:</p>
+                <button class="btn btn-primary" onclick="selectAuthMethod('otp')">OTP (SMS)</button>
+                <button class="btn btn-secondary" onclick="selectAuthMethod('mfa')">MFA Authenticator</button>
+            </div>
+            <div id="authCodeInput" style="display:none;">
+                <div id="demoCodeDisplay" class="demo-code"></div>
+                <div class="form-group">
+                    <label for="authCode">Enter Code</label>
+                    <input type="text" id="authCode" placeholder="Enter 6-digit code" maxlength="6">
+                </div>
+                <button class="btn btn-primary" onclick="verifyAuthCode()">Verify</button>
+                <button class="btn btn-secondary" onclick="closeAuthModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Update hint based on role selection
+        document.getElementById('roleType').addEventListener('change', function() {
+            const hint = document.getElementById('userIdHint');
+            const userId = document.getElementById('userId');
+            switch(this.value) {
+                case 'enduser':
+                    hint.textContent = 'Format: Cust#### (e.g., Cust1001)';
+                    userId.placeholder = 'e.g., Cust1001';
+                    break;
+                case 'support':
+                    hint.textContent = 'Format: Emp### (e.g., Emp101)';
+                    userId.placeholder = 'e.g., Emp101';
+                    break;
+                case 'vendor':
+                    hint.textContent = 'Format: Ven#### (e.g., Ven2001)';
+                    userId.placeholder = 'e.g., Ven2001';
+                    break;
+                default:
+                    hint.textContent = '';
+            }
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    </script>
+</body>
+</html>
